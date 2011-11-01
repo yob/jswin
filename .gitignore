@@ -1,5 +1,5 @@
 node_modules
-public/javascripts
+public/javascripts/*
 spec/compiled
 docs
 .jhw-cache
