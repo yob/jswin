@@ -4,13 +4,13 @@
       constructor: (url, options) ->
         @url = url
         @options = options
-        console.log "SocketIOWrapper instantiated with url:#{@url}"
+        # console.log "SocketIOWrapper instantiated with url:#{@url}"
 
       connect: (autoReconnect=true, autoReconnectTimeout=2000) =>
         if not tc.socket
           if @.hasOwnProperty('on_connecting')
             @on_connecting()
-          console.log "We woulc normally connect to Socket.IO here, but this is just a test :)"
+          # console.log "We woulc normally connect to Socket.IO here, but this is just a test :)"
           # tc.socket = new io.Socket(@url, @options)
           tc.socket = off
           return

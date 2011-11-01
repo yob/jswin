@@ -7,13 +7,13 @@ require ['lib/SocketIOWrapper'], ->
           @connect()
 
         on_connecting: =>
-          console.log 'SocketIOClass.on_connecting'
+          # console.log 'SocketIOClass.on_connecting'
 
         on_connect: =>
-          console.log 'SocketIOClass.on_connect'
+          # console.log 'SocketIOClass.on_connect'
 
         on_message: (data) =>
-          console.log 'SocketIOClass.on_message'
+          # console.log 'SocketIOClass.on_message'
 
         on_disconnect: (event) =>
-          console.log 'SocketIOClass.on_disconnect'
+          # console.log 'SocketIOClass.on_disconnect'
