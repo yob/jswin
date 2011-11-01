@@ -3,6 +3,8 @@
 Testcase for getting Coffeescript & Jasmine working in a modular & organised manner.
 Heavily inspired by https://github.com/hornairs/muffin and Shopify's Batman.js cakefile.
 
+Check out the `./coffee` and `./spec` dirs for the sweet action.
+
 ## Requirements
 
 - ruby
