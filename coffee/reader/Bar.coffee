@@ -1,3 +1,5 @@
-class Bar
-  whoami: ->
-    'bar'
+@module 'tc', ->
+  @module 'reader', ->
+    class @Bar
+      whoami: ->
+        'bar'

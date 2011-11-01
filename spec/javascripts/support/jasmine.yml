@@ -11,7 +11,10 @@
 #   - dist/**/*.js
 #
 src_files:
-    - public/javascripts/**/*.js
+  - ../../public/javascripts/vendor/jquery.1.6.4.js
+  - ../../public/javascripts/vendor/minipubsub.js
+  - ../../public/javascripts/vendor/require.js
+  - ./**/*.js
 
 # stylesheets
 #
@@ -37,6 +40,7 @@ stylesheets:
 #   - helpers/**/*.js
 #
 helpers:
+  - "helpers/**/*.{js,coffee}"
 
 # spec_files
 #
@@ -49,6 +53,7 @@ helpers:
 #   - **/*[sS]pec.js
 #
 spec_files:
+  - "**/*_spec.{js,coffee}"
 
 # src_dir
 #
@@ -60,6 +65,7 @@ spec_files:
 # src_dir: public
 #
 src_dir:
+  - spec/compiled
 
 # spec_dir
 #
@@ -71,3 +77,4 @@ src_dir:
 # spec_dir: spec/javascripts
 #
 spec_dir:
+  - spec/coffee

@@ -1,1 +1,1 @@
-require ['reader/Foo']
+require ['lib/module', 'reader/Foo']

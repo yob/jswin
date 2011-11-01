@@ -52,14 +52,14 @@ task 'test', 'compile specs and code, run the test suite', (options) ->
   spec_output_dir   = temp.mkdirSync()
   buildAppJS(options, spec_output_dir)
 
-  files             = glob.globSync './spec/**/*.coffee'
+  files             = glob.globSync './spec/coffee/**/*.coffee'
 
   muffin.run
     files: files
     options: options
     map:
       # compile specs and helpers
-      "./spec/.+/(.+)_(spec|helper)\.coffee": (matches) ->
+      "./spec/coffee/.+/(.+)_(spec|helper)\.coffee": (matches) ->
         muffin.compileScript matches[0], "#{spec_output_dir}/spec/#{matches[1]}_#{matches[2]}.js", options
     after: ->
       requirejs = require 'requirejs'

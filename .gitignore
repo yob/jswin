@@ -2,3 +2,4 @@ node_modules
 public/javascripts
 spec/compiled
 docs
+.jhw-cache

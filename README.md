@@ -1,5 +1,6 @@
 Things you need;
 
+- ruby
 - node ~4.0
 - npm;
   - requirejs
