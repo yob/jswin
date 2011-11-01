@@ -1,14 +1,14 @@
-muffin = require 'muffin'
-fs     = require 'fs'
-glob   = require 'glob'
-path   = require 'path'
+muffin  = require 'muffin'
+fs      = require 'fs'
+glob    = require 'glob'
+path    = require 'path'
 {spawn} = require 'child_process'
 
-option '-w', '--watch',     'continue to watch the files and rebuild them when they change'
-option '-s', '--coverage',  'run jscoverage during tests and report coverage (test task only)'
-option '-c', '--commit',    'operate on the git index instead of the working tree'
-option '-m', '--compare',   'compare across git refs, stats task only.'
-option '-d', '--dist',      'process the built coffee with requrirejs and concat/minify the result for production use.'
+option '-w', '--watch',       'continue to watch the files and rebuild them when they change'
+option '-s', '--coverage',    'run jscoverage during tests and report coverage (test task only)'
+option '-c', '--commit',      'operate on the git index instead of the working tree'
+option '-m', '--compare',     'compare across git refs, stats task only.'
+option '-p', '--production',  'process the built coffee with requrirejs and concat/minify the result for production use.'
 
 
 task 'doc', 'build the Docco documentation', (options) ->
@@ -16,14 +16,24 @@ task 'doc', 'build the Docco documentation', (options) ->
     files: './coffee/**/*.coffee'
     options: options
     map:
-      "./coffee/(.+)\.coffee": (matches) ->
-        muffin.doccoFile matches[0], options
+      "./coffee/(.+)\.coffee": (matches) -> muffin.doccoFile matches[0], options
+
+
+task 'stats', 'compile the files and report on their final size', (options) ->
+  stat = (files) ->
+    muffin.statFiles(
+      files,
+      {
+        fields:['filename', 'filetype', 'sloc', 'blank', 'comment', 'size', 'modified']
+      }
+    )
+  stat glob.globSync('./coffee/**/*.coffee')
+  stat glob.globSync('./public/javascripts/**/*.js')
 
 
 buildAppJS = (options, output_dir="./public/javascripts") ->
-  files = glob.globSync('./coffee/**/*.coffee')
   muffin.run
-    files: files
+    files: glob.globSync './coffee/**/*.coffee'
     options: options
     map:
       "./coffee/(.+)\.coffee": (matches) ->
@@ -48,27 +58,36 @@ task 'build', 'compile javascript', (options) ->
 
 
 task 'test', 'compile specs and code, run the test suite', (options) ->
-  temp              = require 'temp'
-  spec_output_dir   = temp.mkdirSync()
-  buildAppJS(options, spec_output_dir)
+  temp       = require 'temp'
+  temp_dir   = temp.mkdirSync()
 
-  files             = glob.globSync './spec/coffee/**/*.coffee'
+  # make sure the application js is freshly built into the temp dir
+  buildAppJS options, temp_dir
 
+  # move and vendor scripts into place inside the temp folder
   muffin.run
-    files: files
+    files: glob.globSync './public/javascripts/vendor/*.js'
+    options: options
+    map:
+      "./public/javascripts/(.*\.js)": (matches) ->
+        muffin.copyFile matches[0], "#{temp_dir}/#{matches[1]}", options
+
+  # compile the coffeescript specs into the temp folder and then run requirejs
+  muffin.run
+    files: glob.globSync './spec/coffee/**/*.coffee'
     options: options
     map:
       # compile specs and helpers
       "./spec/coffee/.+/(.+)_(spec|helper)\.coffee": (matches) ->
-        muffin.compileScript matches[0], "#{spec_output_dir}/spec/#{matches[1]}_#{matches[2]}.js", options
+        muffin.compileScript matches[0], "#{temp_dir}/spec/#{matches[1]}_#{matches[2]}.js", options
     after: ->
       requirejs = require 'requirejs'
-      targets = glob.globSync("#{spec_output_dir}/*.js")
+      targets = glob.globSync "#{temp_dir}/*.js"
 
       for target in targets
-        matches = /.*\/(.+)\.js/.exec(target)
+        matches = /.*\/(.+)\.js/.exec target
         config = {
-          baseUrl: spec_output_dir,
+          baseUrl: temp_dir,
           name: matches[1],
           out: "./spec/compiled/#{matches[1]}.js"
         }
