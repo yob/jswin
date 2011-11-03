@@ -6,7 +6,7 @@ Heavily inspired by [muffin](https://github.com/hornairs/muffin) and Shopify’s
 
 ### Advantages of this approach;
 - write your javascript in coffee.
-- split your coffee out into organised and abstracted modules.
+- split your coffee out into organised and abstracted modules in separate files.
 - use require.js to manage dependancies between modules.
 - for production; bundle all your code up into single minified, concatenated top-level files for production, cleanly wrapping up dependancies and bundling app code into a nice, namespaced out object structure and hanging it all off `window`.
 - write jasmine tests for your app code using coffeescript.
