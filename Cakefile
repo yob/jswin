@@ -38,7 +38,7 @@ buildAppJS = (options, output_dir="./public/javascripts") ->
         muffin.compileScript matches[0], "#{output_dir}/#{matches[1]}.js", options
 
     after: ->
-      if options.dist
+      if options.production
         requirejs = require 'requirejs'
         dist_targets = glob.globSync("#{output_dir}/*.js")
         for target in dist_targets
@@ -46,7 +46,7 @@ buildAppJS = (options, output_dir="./public/javascripts") ->
           config = {
             baseUrl: output_dir,
             name: matches[1],
-            out: "#{output_dir}/build/#{matches[1]}.js"
+            out: "#{output_dir}/#{matches[1]}.js"
           }
           requirejs.optimize config, (buildResponse) ->
             contents = fs.readFileSync config.out, 'utf8'
