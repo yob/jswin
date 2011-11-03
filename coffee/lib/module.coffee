@@ -1,6 +1,8 @@
-window.module = (name, fn)->
-  if not @[name]?
-    this[name] = {}
-  if not @[name].module?
-    @[name].module = window.module
-  fn.apply(this[name], [])
+@module = (names, fn) ->
+  names = names.split '.' if typeof names is 'string'
+  space = @[names.shift()] ||= {}
+  space.module ||= @module
+  if names.length
+    space.module names, fn
+  else
+    fn.call space

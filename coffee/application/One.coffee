@@ -1,5 +1,4 @@
-@module 'tc', ->
-  @module 'application', ->
-    class @One
-      whoami: ->
-        'application.One'
+@module 'tc.application', ->
+  class @One
+    whoami: ->
+      'tc.application.One'
