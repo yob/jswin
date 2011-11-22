@@ -17,10 +17,10 @@ Write your app code in `app/assets/javascipts/application.js` and `app/assets/ja
 
 Use [coffeescript modules](https://github.com/jashkenas/coffee-script/wiki/Easy-modules-with-CoffeeScript) to make sure that your code is nicely wrapped up when compiled out. For example here are the contents of `./app/assets/javascipts/application/One.coffee`;
 
-  @module 'tc.application', ->
-    class @One
-      whoami: ->
-        tc.application.One'
+    @module 'tc.application', ->
+      class @One
+        whoami: ->
+          tc.application.One'
 
 Will end up being available at `window.tc.application.One`, and similarly all the other code for the application example will look something like this;
 
@@ -34,11 +34,11 @@ Will end up being available at `window.tc.application.One`, and similarly all th
 
 etc...which allows for fun stuff like this;
 
-  #= require SocketIOWrapper
-  module "tc.application", ->
-    class @ComplexClassExample extends SocketIOWrapper
-      constructor: (url, options) ->
-      # etc, etc...
+    #= require SocketIOWrapper
+    module "tc.application", ->
+      class @ComplexClassExample extends SocketIOWrapper
+        constructor: (url, options) ->
+        # etc, etc...
 
 Write specs in `spec/javascripts`.
 
